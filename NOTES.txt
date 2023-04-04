@@ -1,0 +1,6 @@
+We use DBTX as interface so that we can inject transactions as dependency instead of database
+itself. it makes it flexible
+
+we have db->repository->service->
+
+business logic will be there in create Service 
