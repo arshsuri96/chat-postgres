@@ -7,12 +7,12 @@ import (
 )
 
 type Handler struct {
-	service
+	Service
 }
 
-func NewHandler(s service) *Handler {
+func NewHandler(s Service) *Handler {
 	return &Handler{
-		service: s,
+		Service: s,
 	}
 }
 
@@ -22,7 +22,7 @@ func (h *Handler) createUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	res, err := h.service.CreateUser(c.Request.Context(), &u)
+	res, err := h.Service.CreateUser(c.Request.Context(), &u)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
