@@ -9,7 +9,7 @@ import (
 var r *gin.Engine
 
 func InitRouter(userHandler *user.Handler) {
-	r := gin.Default()
+	r = gin.Default()
 	r.POST("/signup", userHandler.CreateUser)
 }
 

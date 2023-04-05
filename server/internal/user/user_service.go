@@ -19,8 +19,6 @@ func NewService(repository Repository) Service {
 	}
 }
 
-//the parameters will be asked from service layer to the handler layer hence (create user req)
-
 func (s *service) CreateUser(c context.Context, req *CreateUserReq) (*CreateUserRes, error) {
 	ctx, cancel := context.WithTimeout(c, s.timeout)
 	defer cancel()
@@ -30,17 +28,13 @@ func (s *service) CreateUser(c context.Context, req *CreateUserReq) (*CreateUser
 		return nil, err
 	}
 
-	//TODO hash password
-
 	u := &User{
 		Username: req.Username,
-		email:    req.email,
+		Email:    req.Email,
 		Password: hashedPassword,
 	}
-	//once we find the user, we will call the repository
-	//calling the repository we defined inside service, call createuser and pass pointer to user
 
-	r, err := s.Repository.createUser(ctx, u)
+	r, err := s.Repository.CreateUser(ctx, u)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +42,7 @@ func (s *service) CreateUser(c context.Context, req *CreateUserReq) (*CreateUser
 	res := &CreateUserRes{
 		ID:       strconv.Itoa(int(r.ID)),
 		Username: r.Username,
-		email:    r.email,
+		Email:    r.Email,
 	}
 
 	return res, nil

@@ -3,29 +3,28 @@ package user
 import "context"
 
 type User struct {
-	ID       int64  `json:"id" db:"id"`
-	Username string `json:"username" db:"username"`
-	email    string `json:"email" db:"email"`
-	Password string `json:"password" db:"email"`
+	ID       int64  `json:"id"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 type CreateUserReq struct {
-	ID       int64  `json:"id" db:"id"`
-	Username string `json:"username" db:"username"`
-	email    string `json:"email" db:"email"`
-	Password string `json:"password" db:"email"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 type CreateUserRes struct {
-	ID       string `json:"id" db:"id"`
-	Username string `json:"username" db:"username"`
-	email    string `json:"email" db:"email"`
+	ID       string `json:"id"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+}
+
+type Repository interface {
+	CreateUser(ctx context.Context, user *User) (*User, error)
 }
 
 type Service interface {
 	CreateUser(c context.Context, req *CreateUserReq) (*CreateUserRes, error)
-}
-
-type Repository interface {
-	createUser(ctx context.Context, user *User) (*User, error)
 }
