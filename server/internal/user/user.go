@@ -28,7 +28,7 @@ type LoginUserReq struct {
 
 type LoginUserRes struct {
 	accessToken string
-	ID          int64  `json:"id" db:"id"`
+	ID          string `json:"id" db:"id"`
 	Username    string `json:"username" db:"username"`
 }
 
@@ -39,4 +39,5 @@ type Repository interface {
 
 type Service interface {
 	CreateUser(c context.Context, req *CreateUserReq) (*CreateUserRes, error)
+	Login(c context.Context, req *LoginUserReq) (*LoginUserRes, error)
 }

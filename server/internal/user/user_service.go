@@ -68,5 +68,24 @@ func (s *service) Login(c context.Context, req *LoginUserReq) (*LoginUserRes, er
 	if err != nil {
 		return &LoginUserRes{}, err
 	}
-	return &LoginUserRes{}, nil
+	err = util.CheckPassword(req.Password, u.Password)
+	if err != nil {
+		return &LoginUserRes{}, nil
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodES256, MyJWTClaims{
+		ID:       strconv.Itoa(int(u.ID)),
+		Username: u.Username,
+		RegisteredClaims: jwt.RegisteredClaims{
+			Issuer:    strconv.Itoa(int(u.ID)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
+		},
+	})
+
+	ss, err := token.SignedString([]byte(secretKey))
+	if err != nil {
+		return &LoginUserRes{}, nil
+	}
+
+	return &LoginUserRes{accessToken: ss, Username: u.Username, ID: strconv.Itoa(int(u.ID))}, nil
+
 }
