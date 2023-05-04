@@ -4,3 +4,9 @@ itself. it makes it flexible
 we have db->repository->service->
 
 business logic will be there in create Service 
+
+client 
+-ID, ROOM ID, Message, conn, username 
+
+message 
+username, content, roomid

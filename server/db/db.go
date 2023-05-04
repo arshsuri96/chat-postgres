@@ -16,6 +16,7 @@ func NewDatabase() (*Database, error) {
 		return nil, err
 	}
 
+	//return to database struct
 	return &Database{db: db}, nil
 }
 
