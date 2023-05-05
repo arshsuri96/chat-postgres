@@ -1,15 +1,13 @@
 package ws
 
-import (
-	"golang.org/x/net/websocket"
-)
+import "github.com/gorilla/websocket"
 
 type Client struct {
-	conn     *websocket.Conn
+	Conn     *websocket.Conn
 	Message  chan *Message
 	Username string `json:"Username"`
 	ID       string `json:"Id"`
-	RoomID   int    `json:"RoomId"`
+	RoomID   string `json:"RoomId"`
 }
 
 type Message struct {
