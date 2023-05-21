@@ -10,3 +10,18 @@ client
 
 message 
 username, content, roomid
+
+--
+
+ws
+ws_handler - handler struct will have hub
+factory function 
+
+
+
+hub
+hub struct will have rooms and rooms will have clients, name, ID and then we make factory fucntion 
+
+client
+client will have client and messages. client will have conn, message chan*Message, id, username, roomid
+message will have content username roomid
