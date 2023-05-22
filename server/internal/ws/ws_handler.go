@@ -1,6 +1,7 @@
 package ws
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -77,4 +78,41 @@ func (h *Handler) JoinRoom(c *gin.Context) {
 
 	h.hub.Broadcast <- m
 
+}
+
+func (c *Client) WriteMessage() {
+	defer func() {
+		c.Conn.Close()
+	}()
+	for {
+		message, ok := <-c.Message
+		if !ok {
+			return
+		}
+		c.Conn.WriteJSON(message)
+	}
+}
+
+func (c *Client) ReadMessage(h *Hub) {
+	//defer read from hub
+	defer func() {
+
+	}()
+	for {
+		_, m, err := c.Conn.ReadMessage()
+		if err != nil {
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+				log.Printf("error: %v", err)
+			}
+			break
+		}
+
+		msg := &Message{
+			Content:  string(m),
+			Username: c.Username,
+			RoomID:   c.RoomID,
+		}
+		h.Broadcast <- msg
+
+	}
 }
