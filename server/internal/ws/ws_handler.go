@@ -81,3 +81,47 @@ func (h *Handler) JoinRoom(c *gin.Context) {
 	cl.readMessage(h.hub)
 
 }
+
+//join room//upgrade the connection//extract by using c.params//
+
+type RoomRes struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+//handler get room return gin
+
+func (h *Handler) GetRoom(c *gin.Context) {
+	rooms := make([]RoomRes, 0)
+	for _, r := range rooms {
+		rooms = append(rooms, RoomRes{
+			ID:   r.ID,
+			Name: r.Name,
+		})
+	}
+	c.JSON(http.StatusOK, rooms)
+}
+
+type ClientsRes struct {
+	ID       string `json:"id"`
+	UserName string `json:"username"`
+}
+
+func (h *Handler) GetClients(c *gin.Context) {
+
+	var clients []ClientsRes
+
+	RoomID := c.Param("roomId")
+	if _, ok := h.hub.Rooms[RoomID]; ok {
+		clients = make([]ClientsRes, 0)
+		c.JSON(http.StatusOK, clients)
+	}
+
+	for _, c := range h.hub.Rooms[RoomID].Clients {
+		clients = append(clients, ClientsRes{
+			ID:       c.ID,
+			UserName: c.Username,
+		})
+	}
+	c.JSON(http.StatusOK, clients)
+}
